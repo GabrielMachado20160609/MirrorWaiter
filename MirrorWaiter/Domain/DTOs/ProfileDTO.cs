@@ -2,7 +2,7 @@
 
 namespace MirrorWaiter.Domain.DTOs
 {
-    public class UserDTO
+    public class ProfileDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

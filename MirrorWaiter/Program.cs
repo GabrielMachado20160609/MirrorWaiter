@@ -1,3 +1,5 @@
+using MirrorWaiter.Domain.Model.ProfileAggregate;
+using MirrorWaiter.Infrastructure.Repositories;
 using MirrorWaiter.Mapper;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddAutoMapper(typeof(DomainToDTOMapping));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddTransient<IProfileRepository, ProfileRepository>();
+
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();

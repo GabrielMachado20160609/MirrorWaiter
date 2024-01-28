@@ -2,15 +2,15 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MirrorWaiter.Domain.Model.UserAggregate
+namespace MirrorWaiter.Domain.Model.ProfileAggregate
 {
-    [Table("user")]
-    public class User
+    [Table("profile")]
+    public class Profile
     {
         [Key]
         public int id { get; set; }
         public string name { get; set; }
-        public string nickName { get; set; }
+        public string nick_name { get; set; }
         public int age { get; set; }
         public string password { get; set; }
         public string email { get; set; }
@@ -18,20 +18,18 @@ namespace MirrorWaiter.Domain.Model.UserAggregate
         public string country { get; set; }
         public Gender gender { get; set; }
         public string link { get; set; }
-        public string profileImage { get; set; }
-        public string bannerImage { get; set; }
-        public DateTime? created { get; set; }
-        public DateTime? updated { get; set; }
+        public string profile_image { get; set; }
+        public string banner_image { get; set; }
 
-        public User() { }
+        public Profile() { }
 
-        public User(string name, string nickName, 
+        public Profile(string name, string nick_name, 
             int age, string password, string email, 
             string bio, string country, Gender gender, 
-            string link, string profileImage, string bannerImage)
+            string link, string profile_image, string banner_image)
         {
             this.name = name;
-            this.nickName = nickName;
+            this.nick_name = nick_name;
             this.age = age;
             this.password = password;
             this.email = email;
@@ -39,8 +37,8 @@ namespace MirrorWaiter.Domain.Model.UserAggregate
             this.country = country;
             this.gender = gender;
             this.link = link;
-            this.profileImage = profileImage;
-            this.bannerImage = bannerImage;
+            this.profile_image = profile_image;
+            this.banner_image = banner_image;
         }
     }
 }

@@ -14,8 +14,25 @@ namespace MirrorWaiter.Infrastructure.Repositories
         }
 
         public List<ProfileDTO> Get(int pageNumber, int pageQuantity)
-        {
-            throw new NotImplementedException();
+        {           
+
+            return _connectionContext.Profiles
+                .Skip(pageNumber * pageQuantity)
+                .Take(pageQuantity)
+                .Select(x => new ProfileDTO
+                {
+                    Id = x.id,
+                    Name = x.name,
+                    NickName = x.nick_name,
+                    Email = x.email,
+                    ProfileImage = x.profile_image,
+                    BannerImage = x.banner_image,
+                    Country = x.country,
+                    Bio = x.bio,
+                    Gender = x.gender,
+                    Link = x.link,
+                    Age = x.age,
+                }).ToList();
         }
 
         public Profile Get(int id)
@@ -23,9 +40,16 @@ namespace MirrorWaiter.Infrastructure.Repositories
             return _connectionContext.Profiles.Find(id);
         }
 
-        public Profile Update(Profile user)
+        public Profile Update(Profile profile)
         {
-            throw new NotImplementedException();
+            if(profile != null)
+            {
+                _connectionContext.Update(profile);
+                _connectionContext.SaveChanges();
+                return profile;
+            }
+
+            return null;
         }
     }
 }

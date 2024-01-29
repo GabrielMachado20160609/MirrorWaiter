@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MirrorWaiter.Domain.DTOs;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 
@@ -10,9 +9,9 @@ namespace MirrorWaiter.Controllers
     public class ProfileController : ControllerBase
     {
         private readonly IProfileRepository _profileRepository;
-        private readonly IMapper _mapper;
+        private readonly AutoMapper.IMapper _mapper;
 
-        public ProfileController(IProfileRepository profileRepository, IMapper mapper)
+        public ProfileController(IProfileRepository profileRepository, AutoMapper.IMapper mapper)
         {
             _profileRepository = profileRepository;
             _mapper = mapper;
@@ -24,6 +23,14 @@ namespace MirrorWaiter.Controllers
         {
             var profile = _mapper.Map<ProfileDTO>(_profileRepository.Get(id));
             return Ok(profile);
+        }
+
+        [HttpPost]
+        public IActionResult AddProfile([FromBody] Profile profile)
+        {
+            _profileRepository.Add(profile);
+            var profileDTO = _mapper.Map<ProfileDTO>(profile);
+            return Ok(profileDTO);
         }
     }
 }

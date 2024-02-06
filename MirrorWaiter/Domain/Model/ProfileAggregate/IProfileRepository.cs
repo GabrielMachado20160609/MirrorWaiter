@@ -8,5 +8,6 @@ namespace MirrorWaiter.Domain.Model.ProfileAggregate
         Profile Update(Profile profile);
         List<ProfileDTO> Get(int pageNumber, int pageQuantity);
         Profile Get(int id);
+        object Authenticate(string email, string password);
     }
 }

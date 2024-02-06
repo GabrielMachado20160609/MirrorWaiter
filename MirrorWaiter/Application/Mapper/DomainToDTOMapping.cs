@@ -1,11 +1,11 @@
 ﻿using MirrorWaiter.Domain.DTOs;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 
-namespace MirrorWaiter.Mapper
+namespace MirrorWaiter.Application.Mapper
 {
-    public class DomainToDTOMapping: AutoMapper.Profile
+    public class DomainToDTOMapping : AutoMapper.Profile
     {
-        public DomainToDTOMapping() 
+        public DomainToDTOMapping()
         {
             CreateMap<Profile, ProfileDTO>()
                 .ForMember(dest => dest.NickName, map => map.MapFrom(origin => origin.nick_name))

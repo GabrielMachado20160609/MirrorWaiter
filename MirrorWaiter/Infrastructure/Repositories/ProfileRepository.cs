@@ -1,20 +1,24 @@
-﻿using MirrorWaiter.Domain.DTOs;
+﻿using MirrorWaiter.Application.Services;
+using MirrorWaiter.Domain.DTOs;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 
 namespace MirrorWaiter.Infrastructure.Repositories
 {
-    public class ProfileRepository: IProfileRepository
+    public class ProfileRepository : IProfileRepository
     {
         private readonly ConnectionContext _connectionContext = new ConnectionContext();
 
         public void Add(Profile profile)
         {
-            _connectionContext.Add(profile);
-            _connectionContext.SaveChanges();
+            if (!_connectionContext.Profiles.Where(x => x.email == profile.email).Any())
+            {
+                _connectionContext.Profiles.Add(profile);
+                _connectionContext.SaveChanges();
+            }
         }
 
         public List<ProfileDTO> Get(int pageNumber, int pageQuantity)
-        {           
+        {
 
             return _connectionContext.Profiles
                 .Skip(pageNumber * pageQuantity)
@@ -42,14 +46,25 @@ namespace MirrorWaiter.Infrastructure.Repositories
 
         public Profile Update(Profile profile)
         {
-            if(profile != null)
-            {
-                _connectionContext.Update(profile);
-                _connectionContext.SaveChanges();
-                return profile;
-            }
+            _connectionContext.Update(profile);
+            _connectionContext.SaveChanges();
+            return profile;
+        }
 
-            return null;
+        public object Authenticate(string email, string password)
+        {
+            var profile = _connectionContext.Profiles.Where(user => user.email == email && user.password == password).SingleOrDefault();
+            if (profile != null)
+            {
+                var token = TokenService.GenerateToken(profile);
+
+                return new
+                {
+                    token,
+                    profile
+                };
+            }
+            else return null;
         }
     }
 }

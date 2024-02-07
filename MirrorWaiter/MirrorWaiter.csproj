@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Domain\Model\LikeAggregate\" />
     <Folder Include="Domain\Model\CommentAggregate\" />
   </ItemGroup>
 

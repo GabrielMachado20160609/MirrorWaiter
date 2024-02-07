@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MirrorWaiter;
 using MirrorWaiter.Application.Mapper;
+using MirrorWaiter.Domain.Model.LikeAggregate;
+using MirrorWaiter.Domain.Model.PostAggregate;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 using MirrorWaiter.Infrastructure.Repositories;
 using System.Text;
@@ -19,6 +21,8 @@ builder.Services.AddAutoMapper(typeof(DomainToDTOMapping));
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddTransient<IProfileRepository, ProfileRepository>();
+builder.Services.AddTransient<IPostRepository, PostRepository>();
+builder.Services.AddTransient<ILikeRepository, LikeRepository>();
 
 builder.Services.AddSwaggerGen(x =>
 {

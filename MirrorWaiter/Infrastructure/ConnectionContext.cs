@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MirrorWaiter.Domain.Model.LikeAggregate;
 using MirrorWaiter.Domain.Model.PostAggregate;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 
@@ -8,6 +9,7 @@ namespace MirrorWaiter.Infrastructure
     {
         public DbSet<Profile> Profiles { get; set; }
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Like> Likes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
             => optionsBuilder.UseNpgsql(

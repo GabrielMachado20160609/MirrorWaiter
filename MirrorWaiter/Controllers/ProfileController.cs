@@ -1,6 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using MirrorWaiter.Domain.DTOs;
+using MirrorWaiter.Domain.Model.Enums;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
+using MirrorWaiter.Domain.Model.RegisterCredentials;
+using System.Diagnostics.Metrics;
+using System.Xml.Linq;
 
 namespace MirrorWaiter.Controllers
 {
@@ -26,8 +31,19 @@ namespace MirrorWaiter.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProfile([FromBody] Profile profile)
+        public IActionResult AddProfile([FromBody] RegisterCredentials credentials)
         {
+            Profile profile = new Profile(
+                credentials.Name,
+                credentials.NickName,
+                credentials.Age,
+                credentials.Password,
+                credentials.Email,
+                credentials.Country,
+                credentials.Gender,
+                credentials.ProfileImage,
+                credentials.BannerImage
+            );
             _profileRepository.Add(profile);
             var profileDTO = _mapper.Map<ProfileDTO>(profile);
             return Ok(profileDTO);

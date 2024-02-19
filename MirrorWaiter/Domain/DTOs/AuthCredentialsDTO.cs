@@ -1,6 +1,6 @@
-﻿namespace MirrorWaiter.Domain.Model.AuthCredentials
+﻿namespace MirrorWaiter.Domain.DTOs
 {
-    public class AuthCredentials
+    public class AuthCredentialsDTO
     {
         public string Email { get; set; }
         public string Password { get; set; }

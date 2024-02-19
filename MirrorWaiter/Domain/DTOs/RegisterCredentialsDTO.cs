@@ -1,8 +1,8 @@
 ﻿using MirrorWaiter.Domain.Model.Enums;
 
-namespace MirrorWaiter.Domain.Model.RegisterCredentials
+namespace MirrorWaiter.Domain.DTOs
 {
-    public class RegisterCredentials
+    public class RegisterCredentialsDTO
     {
         public string Name { get; set; }
         public string NickName { get; set; }

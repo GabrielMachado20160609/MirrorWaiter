@@ -5,6 +5,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MirrorWaiter;
 using MirrorWaiter.Application.Mapper;
+using MirrorWaiter.Domain.Model.CommentAggregate;
+using MirrorWaiter.Domain.Model.CommentLikeAggregate;
 using MirrorWaiter.Domain.Model.LikeAggregate;
 using MirrorWaiter.Domain.Model.PostAggregate;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
@@ -22,7 +24,9 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddTransient<IProfileRepository, ProfileRepository>();
 builder.Services.AddTransient<IPostRepository, PostRepository>();
+builder.Services.AddTransient<ICommentRepository, CommentRepository>();
 builder.Services.AddTransient<ILikeRepository, LikeRepository>();
+builder.Services.AddTransient<ICommentLikeRepository, CommentLikeRepository>();
 
 builder.Services.AddSwaggerGen(x =>
 {

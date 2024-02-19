@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MirrorWaiter.Domain.DTOs;
 using MirrorWaiter.Domain.Model.Enums;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
-using MirrorWaiter.Domain.Model.RegisterCredentials;
 using System.Diagnostics.Metrics;
 using System.Xml.Linq;
 
@@ -22,6 +22,7 @@ namespace MirrorWaiter.Controllers
             _mapper = mapper;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{id}")]
         public IActionResult Get(int id)
@@ -31,7 +32,7 @@ namespace MirrorWaiter.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddProfile([FromBody] RegisterCredentials credentials)
+        public IActionResult AddProfile([FromBody] RegisterCredentialsDTO credentials)
         {
             Profile profile = new Profile(
                 credentials.Name,

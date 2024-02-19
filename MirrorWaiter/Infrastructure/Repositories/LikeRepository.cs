@@ -1,4 +1,5 @@
-﻿using MirrorWaiter.Domain.Model.LikeAggregate;
+﻿using MirrorWaiter.Domain.DTOs;
+using MirrorWaiter.Domain.Model.LikeAggregate;
 
 namespace MirrorWaiter.Infrastructure.Repositories
 {
@@ -13,10 +14,14 @@ namespace MirrorWaiter.Infrastructure.Repositories
             return LikesCount(like.post_id);
         }
 
-        public int Remove(Like like)
+        public int Remove(LikeDTO info)
         {
-            _connectionContext.Likes.Remove(like);
-            _connectionContext.SaveChanges();
+            var like = _connectionContext.Likes.Where(x => x.user_id == info.UserId && x.post_id == info.ContentId).FirstOrDefault();
+            if(like != null)
+            {
+                _connectionContext.Likes.Remove(like);
+                _connectionContext.SaveChanges();
+            }
             return LikesCount(like.post_id);
         }
 

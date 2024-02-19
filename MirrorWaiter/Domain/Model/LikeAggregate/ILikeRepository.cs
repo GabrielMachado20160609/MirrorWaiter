@@ -1,9 +1,11 @@
-﻿namespace MirrorWaiter.Domain.Model.LikeAggregate
+﻿using MirrorWaiter.Domain.DTOs;
+
+namespace MirrorWaiter.Domain.Model.LikeAggregate
 {
     public interface ILikeRepository
     {
         int Add(Like like);
-        int Remove(Like like);
+        int Remove(LikeDTO info);
         int LikesCount(int postId);
     }
 }

@@ -1,6 +1,6 @@
-﻿namespace MirrorWaiter.Domain.Model.PostInfo
+﻿namespace MirrorWaiter.Domain.DTOs
 {
-    public class PostInfo
+    public class PostInfoDTO
     {
         public string? Image { get; set; }
         public int UserId { get; set; }

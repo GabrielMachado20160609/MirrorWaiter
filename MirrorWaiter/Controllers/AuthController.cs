@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MirrorWaiter.Domain.Model.AuthCredentials;
+using MirrorWaiter.Domain.DTOs;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 using MirrorWaiter.Infrastructure;
 
@@ -17,7 +17,7 @@ namespace MirrorWaiter.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index([FromBody] AuthCredentials credentials)
+        public IActionResult Index([FromBody] AuthCredentialsDTO credentials)
         {
             var profileWithToken = _profileRepository.Authenticate(credentials.Email, credentials.Password);
             if (profileWithToken != null)

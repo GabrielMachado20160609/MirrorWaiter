@@ -4,7 +4,7 @@
     {
         void Add(Post post);
         void Update(Post post);
-        void Remove(Post post);
-        List<Post> GetUserPosts(int userId);
+        void Remove(int id);
+        List<Post> GetUserPosts(int userId, int pageNumber, int pageQuantity);
     }
 }

@@ -22,7 +22,7 @@ namespace MirrorWaiter.Infrastructure.Repositories
                 _connectionContext.CommentLikes.Remove(like);
                 _connectionContext.SaveChanges();
             }
-            return LikesCount(like.comment_id);
+            return LikesCount(info.ContentId);
         }
 
         public int LikesCount(int postId)

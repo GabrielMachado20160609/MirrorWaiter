@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MirrorWaiter.Domain.DTOs;
+using MirrorWaiter.Domain.Exceptions;
 using MirrorWaiter.Domain.Model.CommentAggregate;
 using MirrorWaiter.Domain.Model.CommentLikeAggregate;
 using MirrorWaiter.Domain.Model.LikeAggregate;
@@ -13,39 +14,40 @@ namespace MirrorWaiter.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostRepository _postRepository;
-        private readonly ICommentRepository _commentRepository;
         private readonly ILikeRepository _likeRepository;
-        private readonly ICommentLikeRepository _commentLikeRepository;
 
         public PostController(
-            IPostRepository postRepository, 
-            ICommentRepository commentRepository, 
-            ILikeRepository likeRepository, 
-            ICommentLikeRepository commentLikeRepository
+            IPostRepository postRepository,
+            ILikeRepository likeRepository
             )
         {
             _postRepository = postRepository;
-            _commentRepository = commentRepository;
             _likeRepository = likeRepository;
-            _commentLikeRepository = commentLikeRepository;
         }
 
         [Authorize]
         [HttpPost]
         public IActionResult Add([FromBody] PostInfoDTO info)
         {
-            Post post;
+            try
+            {
+                Post post;
 
-            if(info.Image != null || info.Image.Length != 0)
-            {
-                post = new Post(info.UserId, info.Text, info.Image);
+                if (info.Image != null || info.Image.Length != 0)
+                {
+                    post = new Post(info.UserId, info.Text, info.Image);
+                }
+                else
+                {
+                    post = new Post(info.UserId, info.Text);
+                }
+                _postRepository.Add(post);
+                return Ok(post);
             }
-            else
+            catch (RequiredInfoException e)
             {
-                post = new Post(info.UserId, info.Text);
+                return BadRequest(e);
             }
-            _postRepository.Add(post);
-            return Ok(post);
         }
 
         [Authorize]
@@ -53,17 +55,51 @@ namespace MirrorWaiter.Controllers
         [HttpPost]
         public IActionResult Update([FromBody] Post post)
         {
-            _postRepository.Update(post);
-            return Ok(post);
+            try
+            {
+                _postRepository.Update(post);
+                return Ok(post);
+            }
+            catch(RequiredInfoException e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [Authorize]
         [Route("{id}/remove")]
         [HttpPost]
-        public IActionResult Remove([FromBody] Post post)
+        public IActionResult Remove(int id)
         {
-            _postRepository.Remove(post);
-            return Ok();
+            try
+            {
+                _postRepository.Remove(id);
+                return Ok();
+            }
+            catch(ItemNotFoundException e)
+            {
+                return BadRequest(e);
+            }
+            catch(RequiredInfoException e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [Authorize]
+        [Route("{userId}-{pageNumber}-{pageQuantity}")]
+        [HttpGet]
+        public IActionResult GetUserPosts(int id, int pageNumber, int pageQuantity)
+        {
+            try
+            {
+                var posts = _postRepository.GetUserPosts(id, pageNumber, pageQuantity);
+                return Ok(posts);
+            }
+            catch(RequiredInfoException e)
+            {
+                return BadRequest(e);
+            }
         }
 
 
@@ -73,8 +109,15 @@ namespace MirrorWaiter.Controllers
         [HttpGet]
         public IActionResult LikeCount(int postId)
         {
-            var count = _likeRepository.LikesCount(postId);
-            return Ok(count);
+            try
+            {
+                var count = _likeRepository.LikesCount(postId);
+                return Ok(count);
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [Authorize]
@@ -82,9 +125,16 @@ namespace MirrorWaiter.Controllers
         [HttpPost]
         public IActionResult Like([FromBody] LikeDTO info)
         {
-            Like like = new Like(info.UserId, info.ContentId);
-            _likeRepository.Add(like);
-            return Ok();
+            try
+            {
+                Like like = new Like(info.UserId, info.ContentId);
+                _likeRepository.Add(like);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [Authorize]
@@ -92,68 +142,15 @@ namespace MirrorWaiter.Controllers
         [HttpPost]
         public IActionResult LikeRemove([FromBody] LikeDTO info)
         {
-            _likeRepository.Remove(info);
-            return Ok();
-        }
-
-
-        //Comments route
-        [Authorize]
-        [Route("{postId}/comment")]
-        [HttpPost]
-        public IActionResult AddComment([FromBody] CommentDTO info)
-        {
-            Comment comm = new Comment(info.UserId, info.Text, info.PostId);
-            _commentRepository.Add(comm);
-            return Ok(comm);
-        }
-
-        [Authorize]
-        [Route("{postId}/comment/{id}/update")]
-        [HttpPost]
-        public IActionResult UpdateComment([FromBody] Comment comment)
-        {
-            _commentRepository.Update(comment);
-            return Ok(comment);
-        }
-
-        [Authorize]
-        [Route("{postId}/comment/{id}/remove")]
-        [HttpPost]
-        public IActionResult RemoveComment([FromBody] Comment comment)
-        {
-            _commentRepository.Remove(comment);
-            return Ok(comment);
-        }
-
-
-        //Comment likes route
-        [Authorize]
-        [Route("{postId}/comment/{id}/like_count")]
-        [HttpGet]
-        public IActionResult CommentLikeCount(int commentId)
-        {
-            var count = _commentLikeRepository.LikesCount(commentId);
-            return Ok(count);
-        }
-
-        [Authorize]
-        [Route("{postId}/comment/{id}/like")]
-        [HttpPost]
-        public IActionResult CommentLike([FromBody] LikeDTO info)
-        {
-            CommentLike like = new CommentLike(info.UserId, info.ContentId);
-            _commentLikeRepository.Add(like);
-            return Ok();
-        }
-
-        [Authorize]
-        [Route("{postId}/comment/{id}/like")]
-        [HttpPost]
-        public IActionResult CommentLikeRemove([FromBody] LikeDTO info)
-        {
-            _commentLikeRepository.Remove(info);
-            return Ok();
+            try
+            {
+                _likeRepository.Remove(info);
+                return Ok();
+            }
+            catch(Exception e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         void Add(Comment comment);
         void Update(Comment comment);
-        void Remove(Comment comment);
-        List<Comment> GetPostComments(int postId);
+        void Remove(int commentId);
+        List<Comment> GetPostComments(int postId, int pageNumber, int pageQuantity);
     }
 }

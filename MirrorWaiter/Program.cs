@@ -1,5 +1,5 @@
 using Asp.Versioning.ApiExplorer;
-using FirstAPI.Application.Swagger;
+using MirrorWaiter.Application.Swagger;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

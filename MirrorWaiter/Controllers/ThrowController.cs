@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MirrorWaiter.Controllers
 {
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ThrowController : ControllerBase
     {
         [Route("/error")]

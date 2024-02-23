@@ -6,6 +6,6 @@ namespace MirrorWaiter.Domain.Model.CommentLikeAggregate
     {
         int Add(CommentLike like);
         int Remove(LikeDTO info);
-        int LikesCount(int postId);
+        int LikesCount(int commentId);
     }
 }

@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MirrorWaiter.Domain.Model.CommentLikeAggregate;
+using MirrorWaiter.Domain.Model.PostAggregate;
+using MirrorWaiter.Domain.Model.ProfileAggregate;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MirrorWaiter.Domain.Model.CommentAggregate

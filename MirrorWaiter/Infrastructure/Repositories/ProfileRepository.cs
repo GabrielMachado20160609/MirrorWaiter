@@ -1,5 +1,6 @@
 ﻿using MirrorWaiter.Application.Services;
 using MirrorWaiter.Domain.DTOs;
+using MirrorWaiter.Domain.Exceptions;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 
 namespace MirrorWaiter.Infrastructure.Repositories
@@ -15,10 +16,18 @@ namespace MirrorWaiter.Infrastructure.Repositories
                 _connectionContext.Profiles.Add(profile);
                 _connectionContext.SaveChanges();
             }
+            else
+            {
+                throw new AlreadyExistsException("Email already registered");
+            }
         }
 
         public List<ProfileDTO> Get(int pageNumber, int pageQuantity)
         {
+            if(pageNumber  < 1 || pageQuantity < 1)
+            {
+                throw new RequiredInfoException("Invalid information");
+            }
 
             return _connectionContext.Profiles
                 .Skip(pageNumber * pageQuantity)
@@ -41,7 +50,18 @@ namespace MirrorWaiter.Infrastructure.Repositories
 
         public Profile Get(int id)
         {
-            return _connectionContext.Profiles.Find(id);
+            if(id < 1)
+            {
+                throw new RequiredInfoException("Invalid information");
+            }
+
+            var item = _connectionContext.Profiles.Find(id);
+            if(item == null)
+            {
+                throw new ItemNotFoundException("No profile found");
+            }
+
+            return item;
         }
 
         public Profile Update(Profile profile)
@@ -54,17 +74,17 @@ namespace MirrorWaiter.Infrastructure.Repositories
         public object Authenticate(string email, string password)
         {
             var profile = _connectionContext.Profiles.Where(user => user.email == email && user.password == password).SingleOrDefault();
-            if (profile != null)
+            if (profile == null)
             {
-                var token = TokenService.GenerateToken(profile);
-
-                return new
-                {
-                    token,
-                    profile
-                };
+                throw new ItemNotFoundException("User not found");
             }
-            else return null;
+
+            var token = TokenService.GenerateToken(profile);
+            return new
+            {
+                token,
+                profile
+            };
         }
     }
 }

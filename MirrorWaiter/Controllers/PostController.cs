@@ -114,7 +114,7 @@ namespace MirrorWaiter.Controllers
                 var count = _likeRepository.LikesCount(postId);
                 return Ok(count);
             }
-            catch(Exception e)
+            catch(ItemNotFoundException e)
             {
                 return BadRequest(e);
             }
@@ -131,7 +131,7 @@ namespace MirrorWaiter.Controllers
                 _likeRepository.Add(like);
                 return Ok();
             }
-            catch(Exception e)
+            catch(RequiredInfoException e)
             {
                 return BadRequest(e);
             }
@@ -147,7 +147,7 @@ namespace MirrorWaiter.Controllers
                 _likeRepository.Remove(info);
                 return Ok();
             }
-            catch(Exception e)
+            catch(ItemNotFoundException e)
             {
                 return BadRequest(e);
             }

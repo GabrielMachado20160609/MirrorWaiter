@@ -96,8 +96,15 @@ namespace MirrorWaiter.Controllers
         [HttpGet]
         public IActionResult CommentLikeCount(int commentId)
         {
-            var count = _commentLikeRepository.LikesCount(commentId);
-            return Ok(count);
+            try
+            {
+                var count = _commentLikeRepository.LikesCount(commentId);
+                return Ok(count);
+            }
+            catch(ItemNotFoundException e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [Authorize]
@@ -105,9 +112,16 @@ namespace MirrorWaiter.Controllers
         [HttpPost]
         public IActionResult CommentLikeAdd([FromBody] LikeDTO info)
         {
-            CommentLike like = new CommentLike(info.UserId, info.ContentId);
-            _commentLikeRepository.Add(like);
-            return Ok();
+            try
+            {
+                CommentLike like = new CommentLike(info.UserId, info.ContentId);
+                _commentLikeRepository.Add(like);
+                return Ok();
+            }
+            catch(RequiredInfoException e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [Authorize]
@@ -115,8 +129,15 @@ namespace MirrorWaiter.Controllers
         [HttpPost]
         public IActionResult CommentLikeRemove([FromBody] LikeDTO info)
         {
-            _commentLikeRepository.Remove(info);
-            return Ok();
+            try
+            {
+                _commentLikeRepository.Remove(info);
+                return Ok();
+            }
+            catch(ItemNotFoundException e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

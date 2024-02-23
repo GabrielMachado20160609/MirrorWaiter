@@ -1,5 +1,8 @@
-﻿using MirrorWaiter.Domain.Model.Enums;
+﻿using MirrorWaiter.Domain.Model.CommentAggregate;
+using MirrorWaiter.Domain.Model.CommentLikeAggregate;
+using MirrorWaiter.Domain.Model.Enums;
 using MirrorWaiter.Domain.Model.LikeAggregate;
+using MirrorWaiter.Domain.Model.PostAggregate;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 

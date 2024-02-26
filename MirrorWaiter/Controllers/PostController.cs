@@ -87,13 +87,13 @@ namespace MirrorWaiter.Controllers
         }
 
         [Authorize]
-        [Route("{userId}-{pageNumber}-{pageQuantity}")]
+        [Route("{userId}/{pageNumber}/{pageQuantity}")]
         [HttpGet]
-        public IActionResult GetUserPosts(int id, int pageNumber, int pageQuantity)
+        public IActionResult GetFullUserPosts(int id, int pageNumber, int pageQuantity)
         {
             try
             {
-                var posts = _postRepository.GetUserPosts(id, pageNumber, pageQuantity);
+                var posts = _postRepository.GetFullUserPosts(id, pageNumber, pageQuantity);
                 return Ok(posts);
             }
             catch(RequiredInfoException e)

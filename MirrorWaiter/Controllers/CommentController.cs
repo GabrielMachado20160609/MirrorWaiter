@@ -74,7 +74,7 @@ namespace MirrorWaiter.Controllers
         }
 
         [Authorize]
-        [Route("{postId}-{pageNumber}-{pageQuantity}")]
+        [Route("{pageNumber}/{pageQuantity}")]
         [HttpGet]
         public IActionResult GetPostComments(int postId, int pageNumber, int pageQuantity)
         {

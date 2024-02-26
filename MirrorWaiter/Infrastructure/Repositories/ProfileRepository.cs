@@ -55,10 +55,10 @@ namespace MirrorWaiter.Infrastructure.Repositories
                 throw new RequiredInfoException("Invalid information");
             }
 
-            var item = _connectionContext.Profiles.Find(id);
+            var item = _connectionContext.Profiles.Where(x => x.id == id).FirstOrDefault();
             if(item == null)
             {
-                throw new ItemNotFoundException("No profile found");
+                throw new ItemNotFoundException("Profile not found");
             }
 
             return item;
@@ -66,6 +66,10 @@ namespace MirrorWaiter.Infrastructure.Repositories
 
         public Profile Update(Profile profile)
         {
+            if(_connectionContext.Profiles.Find(profile) == null)
+            {
+                throw new ItemNotFoundException("Profile not found");
+            }
             _connectionContext.Update(profile);
             _connectionContext.SaveChanges();
             return profile;

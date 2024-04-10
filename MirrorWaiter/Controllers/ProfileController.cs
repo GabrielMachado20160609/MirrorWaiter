@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MirrorWaiter.Domain.DTOs;
+using MirrorWaiter.Domain.Exceptions;
 using MirrorWaiter.Domain.Model.Enums;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 using System.Diagnostics.Metrics;
@@ -27,14 +28,27 @@ namespace MirrorWaiter.Controllers
         [Route("{id}")]
         public IActionResult Get(int id)
         {
-            var profile = _mapper.Map<ProfileDTO>(_profileRepository.Get(id));
-            return Ok(profile);
+            try
+            {
+                var profile = _mapper.Map<ProfileDTO>(_profileRepository.Get(id));
+                return Ok(profile);
+            }
+            catch(ItemNotFoundException e)
+            {
+                return BadRequest(e);
+            }
+            catch(RequiredInfoException e)
+            {
+                return BadRequest(e);
+            }
         }
 
         [HttpPost]
         public IActionResult AddProfile([FromBody] RegisterCredentialsDTO credentials)
         {
-            Profile profile = new Profile(
+            try
+            {
+                Profile profile = new Profile(
                 credentials.Name,
                 credentials.NickName,
                 credentials.Age,
@@ -45,9 +59,31 @@ namespace MirrorWaiter.Controllers
                 credentials.ProfileImage,
                 credentials.BannerImage
             );
-            _profileRepository.Add(profile);
-            var profileDTO = _mapper.Map<ProfileDTO>(profile);
-            return Ok(profileDTO);
+                _profileRepository.Add(profile);
+                var profileDTO = _mapper.Map<ProfileDTO>(profile);
+                return Ok(profileDTO);
+            }
+            catch(AlreadyExistsException e)
+            {
+                return BadRequest(e);
+            }
+        }
+
+        [Authorize]
+        [Route("update/{id}")]
+        [HttpPost]
+        public IActionResult UpdateProfile([FromBody] Profile profile)
+        {
+            try
+            {
+                _profileRepository.Update(profile);
+                var profileDTO = _mapper.Map<ProfileDTO>(profile);
+                return Ok(profileDTO);
+            }
+            catch(ItemNotFoundException e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

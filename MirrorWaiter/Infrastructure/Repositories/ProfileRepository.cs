@@ -38,7 +38,7 @@ namespace MirrorWaiter.Infrastructure.Repositories
                     Name = x.name,
                     NickName = x.nick_name,
                     Email = x.email,
-                    ProfileImage = x.profile_image,
+                    ProfileImageS3Key = x.profile_image_s3_key,
                     BannerImage = x.banner_image,
                     Country = x.country,
                     Bio = x.bio,
@@ -66,11 +66,7 @@ namespace MirrorWaiter.Infrastructure.Repositories
 
         public Profile Update(Profile profile)
         {
-            if(_connectionContext.Profiles.Find(profile) == null)
-            {
-                throw new ItemNotFoundException("Profile not found");
-            }
-            _connectionContext.Update(profile);
+            _connectionContext.Profiles.Update(profile);
             _connectionContext.SaveChanges();
             return profile;
         }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MirrorWaiter.Domain.DTOs;
+using MirrorWaiter.Domain.Exceptions;
 using MirrorWaiter.Domain.Model.ProfileAggregate;
 using MirrorWaiter.Infrastructure;
 
@@ -19,12 +20,15 @@ namespace MirrorWaiter.Controllers
         [HttpPost]
         public IActionResult Index([FromBody] AuthCredentialsDTO credentials)
         {
-            var profileWithToken = _profileRepository.Authenticate(credentials.Email, credentials.Password);
-            if (profileWithToken != null)
+            try
             {
+                var profileWithToken = _profileRepository.Authenticate(credentials.Email, credentials.Password);
                 return Ok(profileWithToken);
             }
-            else return BadRequest();
+            catch(ItemNotFoundException e)
+            {
+                return BadRequest(e);
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ namespace MirrorWaiter.Domain.Model.ProfileAggregate
         public string country { get; set; }
         public Gender gender { get; set; }
         public string link { get; set; } = "";
-        public string profile_image { get; set; }
+        public string profile_image_s3_key { get; set; }
         public string banner_image { get; set; }
 
         public Profile() { }
@@ -30,7 +30,7 @@ namespace MirrorWaiter.Domain.Model.ProfileAggregate
         public Profile(string name, string nick_name, 
             int age, string password, string email, 
             string country, Gender gender, 
-            string profile_image, string banner_image)
+            string profile_image_s3_key, string banner_image)
         {
             this.name = name;
             this.nick_name = nick_name;
@@ -39,7 +39,7 @@ namespace MirrorWaiter.Domain.Model.ProfileAggregate
             this.email = email;
             this.country = country;
             this.gender = gender;
-            this.profile_image = profile_image;
+            this.profile_image_s3_key = profile_image_s3_key;
             this.banner_image = banner_image;
         }
     }

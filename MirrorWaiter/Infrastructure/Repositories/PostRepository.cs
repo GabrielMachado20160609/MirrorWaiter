@@ -3,6 +3,7 @@ using MirrorWaiter.Domain.Exceptions;
 using MirrorWaiter.Domain.Model.CommentAggregate;
 using MirrorWaiter.Domain.Model.LikeAggregate;
 using MirrorWaiter.Domain.Model.PostAggregate;
+using MirrorWaiter.Domain.Model.ProfileAggregate;
 
 namespace MirrorWaiter.Infrastructure.Repositories
 {
@@ -11,6 +12,7 @@ namespace MirrorWaiter.Infrastructure.Repositories
         private readonly ConnectionContext _connectionContext = new ConnectionContext();
         private readonly LikeRepository _likeRepository = new LikeRepository();
         private readonly CommentRepository _commentRepository = new CommentRepository();
+        private readonly ProfileRepository _profileRepository = new ProfileRepository();
 
         public void Add(Post post)
         {
@@ -70,11 +72,17 @@ namespace MirrorWaiter.Infrastructure.Repositories
                 {
                     int likesCount = _likeRepository.LikesCount(post.id);
                     Comment firstComment = _commentRepository.GetPostComments(post.id, 1, 1).FirstOrDefault();
+                    Profile author = _profileRepository.Get(post.user_id);
+                    ProfileMinDTO authorMin = new ProfileMinDTO { Id = author.id, NickName = author.nick_name, PhotoS3Key = author.profile_image_s3_key };
+                    Profile commenter = _profileRepository.Get(firstComment.user_id);
+                    ProfileMinDTO commenterMin = new ProfileMinDTO { Id = commenter.id, NickName = commenter.nick_name, PhotoS3Key = commenter.profile_image_s3_key };
                     fullUserPosts.Add(new FullPostDTO
                     {
                         Post = post,
+                        Author = authorMin,
                         LikesCount = likesCount,
-                        FirstComment = firstComment
+                        FirstComment = firstComment,
+                        Commenter = commenterMin,
                     });
                 }
             }

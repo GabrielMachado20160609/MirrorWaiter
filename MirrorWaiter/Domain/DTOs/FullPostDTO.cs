@@ -7,7 +7,9 @@ namespace MirrorWaiter.Domain.DTOs
     public class FullPostDTO
     {
         public Post Post { get; set; }
+        public ProfileMinDTO Author { get; set; }
         public int LikesCount { get; set; }
         public Comment FirstComment { get; set; }
+        public ProfileMinDTO Commenter { get; set; }
     }
 }

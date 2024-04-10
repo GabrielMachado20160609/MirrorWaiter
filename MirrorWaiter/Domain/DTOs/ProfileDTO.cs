@@ -13,7 +13,7 @@ namespace MirrorWaiter.Domain.DTOs
         public string Country { get; set; }
         public Gender Gender { get; set; }
         public string Link { get; set; }
-        public string ProfileImage { get; set; }
+        public string ProfileImageS3Key { get; set; }
         public string BannerImage { get; set; }
     }
 }
